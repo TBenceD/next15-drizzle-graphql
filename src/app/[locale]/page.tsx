@@ -1,5 +1,6 @@
 import { getTranslations, getLocale } from 'next-intl/server';
 import { locales } from '@/config/locale';
+import GraphQLTest from '@/components/GraphQLTest';
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -16,8 +17,15 @@ export default async function Home() {
   console.log('Page component - translation for hello:', t('hello'));
 
   return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
-      <h1>{t('hello')}</h1>
+    <div className="min-h-screen p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-8 text-center">
+          <h1 className="mb-4 font-bold text-3xl">{t('hello')}</h1>
+          <p className="text-gray-600">Next.js 15.3.3 + Drizzle + Supabase + GraphQL Yoga Demo</p>
+        </div>
+
+        <GraphQLTest />
+      </div>
     </div>
   );
 }

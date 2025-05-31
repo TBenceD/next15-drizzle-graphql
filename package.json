@@ -7,16 +7,27 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:drop": "drizzle-kit drop"
   },
   "lint-staged": {
     "**/*": "biome lint --error-on-warnings ./src"
   },
   "dependencies": {
+    "@graphql-tools/schema": "^10.0.23",
+    "@supabase/supabase-js": "^2.49.8",
     "deepmerge": "^4.3.1",
+    "drizzle-orm": "^0.44.1",
+    "graphql": "^16.11.0",
+    "graphql-yoga": "^5.13.5",
     "husky": "^9.1.7",
     "next": "15.3.3",
     "next-intl": "^4.1.0",
+    "postgres": "^3.4.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -26,8 +37,10 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^22.15.29",
+    "@types/pg": "^8.15.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.1",
     "lint-staged": "^16.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
