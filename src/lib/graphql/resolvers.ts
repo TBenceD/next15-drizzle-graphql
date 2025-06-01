@@ -1,6 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/connection';
 import { users, posts, type User, type Post } from '../db/schema';
+import { auth } from '../auth';
+import crypto from 'node:crypto';
 
 export const resolvers = {
   Query: {
@@ -25,13 +27,23 @@ export const resolvers = {
 
   Mutation: {
     createUser: async (_: unknown, { email, name }: { email: string; name: string }): Promise<User> => {
-      const result = await db.insert(users).values({ email, name }).returning({
-        id: users.id,
-        email: users.email,
-        name: users.name,
-        createdAt: users.createdAt,
-        updatedAt: users.updatedAt
-      });
+      const result = await db
+        .insert(users)
+        .values({
+          id: crypto.randomUUID(),
+          email,
+          name,
+          emailVerified: false
+        })
+        .returning({
+          id: users.id,
+          email: users.email,
+          name: users.name,
+          emailVerified: users.emailVerified,
+          image: users.image,
+          createdAt: users.createdAt,
+          updatedAt: users.updatedAt
+        });
       return result[0];
     },
 
@@ -88,4 +100,17 @@ export const resolvers = {
       return result[0];
     }
   }
+};
+
+// Add this to your context
+export const createContext = async (req: Request) => {
+  const session = await auth.api.getSession({
+    headers: req.headers
+  });
+
+  return {
+    user: session?.user,
+    session: session?.session
+    // ... other context
+  };
 };

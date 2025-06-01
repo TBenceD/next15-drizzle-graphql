@@ -1,10 +1,8 @@
+import { SUPABASE_PROJECT_URL, SUPABASE_SECRET } from '@/config/common';
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_PROJECT_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_SECRET;
-
-if (!supabaseUrl || !supabaseKey) {
+if (!SUPABASE_PROJECT_URL || !SUPABASE_SECRET) {
   throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(SUPABASE_PROJECT_URL, SUPABASE_SECRET);

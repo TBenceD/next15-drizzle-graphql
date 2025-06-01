@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1748718580292,
-      "tag": "0000_slim_thunderbolt",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1748719000000,
-      "tag": "0001_convert_to_uuid",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1748719100000,
-      "tag": "0002_enable_rls",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1748722379143,
-      "tag": "0003_clever_gorilla_man",
+      "when": 1748772978392,
+      "tag": "0000_graceful_maverick",
       "breakpoints": true
     }
   ]
