@@ -8,6 +8,7 @@ const typeDefs = `
     posts: [Post!]!
     createdAt: String!
     updatedAt: String!
+    permissions: [String!]
   }
 
   type Post {
@@ -25,6 +26,7 @@ const typeDefs = `
     user(id: String!): User
     posts: [Post!]!
     post(id: String!): Post
+    me: User
   }
 
   type Mutation {

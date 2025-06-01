@@ -14,7 +14,9 @@
     "db:studio": "drizzle-kit studio",
     "db:drop": "drizzle-kit drop",
     "db:seed": "tsx scripts/seed-user.ts",
-    "db:cleanup": "tsx scripts/cleanup-user.ts"
+    "db:cleanup": "tsx scripts/cleanup-user.ts",
+    "db:setup-permissions": "tsx scripts/setup-permissions.ts",
+    "db:manage-roles": "tsx scripts/manage-roles.ts"
   },
   "lint-staged": {
     "**/*": "biome lint --error-on-warnings ./src"
