@@ -9,6 +9,8 @@ const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT || 'http://localhost:3000/
 const BETTER_AUTH_SECRET = process.env.BETTER_AUTH_SECRET || 'secret';
 const BETTER_AUTH_URL = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
 const NEXT_PUBLIC_BETTER_AUTH_URL = process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:3000';
+const LOCALE_REGEX = /^\/[a-z]{2}(?=\/|$)/;
+const LOCALE_MATCH_REGEX = /^\/([a-z]{2})\//;
 
 export {
   DEFAULT_REDIRECT_URL,
@@ -21,5 +23,7 @@ export {
   GRAPHQL_ENDPOINT,
   BETTER_AUTH_SECRET,
   BETTER_AUTH_URL,
-  NEXT_PUBLIC_BETTER_AUTH_URL
+  NEXT_PUBLIC_BETTER_AUTH_URL,
+  LOCALE_REGEX,
+  LOCALE_MATCH_REGEX
 };

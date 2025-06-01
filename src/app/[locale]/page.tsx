@@ -1,5 +1,3 @@
-import GraphQLTest from '@/components/GraphQLTest';
-import { UserSession } from '@/components/auth/UserSession';
 import { locales } from '@/config/locale';
 import { getTranslations } from 'next-intl/server';
 
@@ -21,10 +19,7 @@ export default async function Home() {
         {/* Authentication Section */}
         <div className="mb-8">
           <h2 className="mb-4 font-semibold text-xl">Authentication</h2>
-          <UserSession />
         </div>
-
-        <GraphQLTest />
       </div>
     </div>
   );
