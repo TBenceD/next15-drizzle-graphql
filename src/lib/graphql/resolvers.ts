@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/connection';
-import { user, posts, type User, type Post } from '../db/schema';
+import { user, type User } from '../db/schema';
 import { auth } from '../auth';
 import { requirePermissionGuard, getUserWithPermissions, getUserPermissions, type UserWithPermissions } from '../auth/permissions';
 import crypto from 'node:crypto';
@@ -20,17 +20,6 @@ export const resolvers = {
     user: async (_: unknown, { id }: { id: string }, context: GraphQLContext): Promise<User | undefined> => {
       await requirePermissionGuard('users.read', context);
       const result = await db.select().from(user).where(eq(user.id, id));
-      return result[0];
-    },
-
-    posts: async (_: unknown, __: unknown, context: GraphQLContext): Promise<Post[]> => {
-      await requirePermissionGuard('posts.read', context);
-      return await db.select().from(posts);
-    },
-
-    post: async (_: unknown, { id }: { id: string }, context: GraphQLContext): Promise<Post | undefined> => {
-      await requirePermissionGuard('posts.read', context);
-      const result = await db.select().from(posts).where(eq(posts.id, id));
       return result[0];
     },
 
@@ -86,79 +75,10 @@ export const resolvers = {
       await requirePermissionGuard('users.delete', context);
       await db.delete(user).where(eq(user.id, id));
       return true;
-    },
-
-    createPost: async (
-      _: unknown,
-      { title, content, authorId }: { title: string; content?: string; authorId: string },
-      context: GraphQLContext
-    ): Promise<Post> => {
-      await requirePermissionGuard('posts.write', context);
-
-      // Users can only create posts for themselves unless they have admin permissions
-      if (context.user?.id !== authorId && !context.user?.permissions?.includes('users.write')) {
-        throw new Error('You can only create posts for yourself');
-      }
-
-      const result = await db.insert(posts).values({ title, content, authorId }).returning({
-        id: posts.id,
-        title: posts.title,
-        content: posts.content,
-        authorId: posts.authorId,
-        createdAt: posts.createdAt,
-        updatedAt: posts.updatedAt
-      });
-      return result[0];
-    },
-
-    updatePost: async (_: unknown, { id, title, content }: { id: string; title?: string; content?: string }, context: GraphQLContext): Promise<Post> => {
-      await requirePermissionGuard('posts.write', context);
-
-      // Check if user owns the post or has admin permissions
-      const existingPost = await db.select().from(posts).where(eq(posts.id, id)).limit(1);
-      if (!existingPost[0]) {
-        throw new Error('Post not found');
-      }
-
-      if (context.user?.id !== existingPost[0].authorId && !context.user?.permissions?.includes('users.write')) {
-        throw new Error('You can only update your own posts');
-      }
-
-      const updateData: { title?: string; content?: string } = {};
-      if (title !== undefined) updateData.title = title;
-      if (content !== undefined) updateData.content = content;
-
-      const result = await db.update(posts).set(updateData).where(eq(posts.id, id)).returning();
-      return result[0];
-    },
-
-    deletePost: async (_: unknown, { id }: { id: string }, context: GraphQLContext): Promise<boolean> => {
-      await requirePermissionGuard('posts.delete', context);
-
-      // Check if user owns the post or has admin permissions
-      const existingPost = await db.select().from(posts).where(eq(posts.id, id)).limit(1);
-      if (!existingPost[0]) {
-        throw new Error('Post not found');
-      }
-
-      if (context.user?.id !== existingPost[0].authorId && !context.user?.permissions?.includes('users.delete')) {
-        throw new Error('You can only delete your own posts');
-      }
-
-      await db.delete(posts).where(eq(posts.id, id));
-      return true;
     }
   },
 
   User: {
-    posts: async (user: User, _: unknown, context: GraphQLContext): Promise<Post[]> => {
-      // Users can see their own posts, others need posts.read permission
-      if (context.user?.id !== user.id) {
-        await requirePermissionGuard('posts.read', context);
-      }
-      return await db.select().from(posts).where(eq(posts.authorId, user.id));
-    },
-
     permissions: async (user: User, _: unknown, context: GraphQLContext): Promise<string[]> => {
       // Only return permissions if it's the current user or if the requester has admin permissions
       if (context.user?.id === user.id) {
@@ -173,14 +93,6 @@ export const resolvers = {
 
       // Others can't see permissions
       return [];
-    }
-  },
-
-  Post: {
-    author: async (post: Post, _: unknown, context: GraphQLContext): Promise<User | undefined> => {
-      await requirePermissionGuard('users.read', context);
-      const result = await db.select().from(user).where(eq(user.id, post.authorId));
-      return result[0];
     }
   }
 };

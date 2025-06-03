@@ -33,10 +33,8 @@ import {
   type NewRolePermission
 } from './schemas/rbac';
 
-import { posts, postsRelations, type Post, type NewPost } from './schemas/content';
-
 // Export all tables
-export { user, session, account, verification, roles, permissions, userRoles, rolePermissions, posts };
+export { user, session, account, verification, roles, permissions, userRoles, rolePermissions };
 
 // Export all relations
 export {
@@ -47,7 +45,6 @@ export {
   permissionsRelations,
   userRolesRelations,
   rolePermissionsRelations,
-  postsRelations,
   userExtendedRelations
 };
 
@@ -65,7 +62,5 @@ export type {
   UserRole,
   NewUserRole,
   RolePermission,
-  NewRolePermission,
-  Post,
-  NewPost
+  NewRolePermission
 };

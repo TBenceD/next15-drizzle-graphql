@@ -1,7 +1,6 @@
 import { pgTable, text, timestamp, varchar, boolean } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { userRoles } from './rbac';
-import { posts } from './content';
 
 // Enhanced Users table for Better Auth
 export const user = pgTable('user', {
@@ -62,7 +61,6 @@ export const verification = pgTable('verification', {
 export const userRelations = relations(user, ({ many }) => ({
   session: many(session),
   account: many(account)
-  // posts and userRoles relations will be added in the main schema index
 }));
 
 export const sessionsRelations = relations(session, ({ one }) => ({
@@ -84,9 +82,7 @@ export const userExtendedRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
   // From rbac schema
-  userRoles: many(userRoles),
-  // From content schema
-  posts: many(posts)
+  userRoles: many(userRoles)
 }));
 
 // Type definitions

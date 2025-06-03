@@ -15,10 +15,7 @@ const LOCALE_MATCH_REGEX = /^\/([a-z]{2})\//;
 const BASIC_PERMISSIONS = [
   { name: 'users.read', description: 'Read users', resource: 'users', action: 'read' },
   { name: 'users.write', description: 'Create and update users', resource: 'users', action: 'write' },
-  { name: 'users.delete', description: 'Delete users', resource: 'users', action: 'delete' },
-  { name: 'posts.read', description: 'Read posts', resource: 'posts', action: 'read' },
-  { name: 'posts.write', description: 'Create and update posts', resource: 'posts', action: 'write' },
-  { name: 'posts.delete', description: 'Delete posts', resource: 'posts', action: 'delete' }
+  { name: 'users.delete', description: 'Delete users', resource: 'users', action: 'delete' }
 ];
 
 const BASIC_ROLES = [

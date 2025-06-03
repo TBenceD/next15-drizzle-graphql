@@ -91,13 +91,9 @@ async function seedUser() {
   console.log('- users.read: Read users');
   console.log('- users.write: Create and update users');
   console.log('- users.delete: Delete users');
-  console.log('- posts.read: Read posts');
-  console.log('- posts.write: Create and update posts');
-  console.log('- posts.delete: Delete posts');
 
   console.log('\n🎭 Available roles:');
   console.log('- admin: Full access to all resources');
-  console.log('- editor: Can manage posts and read users');
   console.log('- user: Read-only access');
 }
 
