@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   experimental: {
     nodeMiddleware: true,
-    ppr: true
+    ppr: true,
+    reactCompiler: true,
   }
 };
 

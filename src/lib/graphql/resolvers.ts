@@ -1,8 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db/connection';
-import { users, posts, type User, type Post } from '../db/schema';
+import { user, posts, type User, type Post } from '../db/schema';
 import { auth } from '../auth';
-import { requirePermissionGuard, getUserWithPermissions, getUserPermissions, type UserWithPermissions } from '../permissions';
+import { requirePermissionGuard, getUserWithPermissions, getUserPermissions, type UserWithPermissions } from '../auth/permissions';
 import crypto from 'node:crypto';
 
 interface GraphQLContext {
@@ -14,12 +14,12 @@ export const resolvers = {
   Query: {
     users: async (_: unknown, __: unknown, context: GraphQLContext): Promise<User[]> => {
       await requirePermissionGuard('users.read', context);
-      return await db.select().from(users);
+      return await db.select().from(user);
     },
 
     user: async (_: unknown, { id }: { id: string }, context: GraphQLContext): Promise<User | undefined> => {
       await requirePermissionGuard('users.read', context);
-      const result = await db.select().from(users).where(eq(users.id, id));
+      const result = await db.select().from(user).where(eq(user.id, id));
       return result[0];
     },
 
@@ -47,7 +47,7 @@ export const resolvers = {
     createUser: async (_: unknown, { email, name }: { email: string; name: string }, context: GraphQLContext): Promise<User> => {
       await requirePermissionGuard('users.write', context);
       const result = await db
-        .insert(users)
+        .insert(user)
         .values({
           id: crypto.randomUUID(),
           email,
@@ -55,13 +55,13 @@ export const resolvers = {
           emailVerified: false
         })
         .returning({
-          id: users.id,
-          email: users.email,
-          name: users.name,
-          emailVerified: users.emailVerified,
-          image: users.image,
-          createdAt: users.createdAt,
-          updatedAt: users.updatedAt
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          emailVerified: user.emailVerified,
+          image: user.image,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt
         });
       return result[0];
     },
@@ -78,13 +78,13 @@ export const resolvers = {
       if (email !== undefined) updateData.email = email;
       if (name !== undefined) updateData.name = name;
 
-      const result = await db.update(users).set(updateData).where(eq(users.id, id)).returning();
+      const result = await db.update(user).set(updateData).where(eq(user.id, id)).returning();
       return result[0];
     },
 
     deleteUser: async (_: unknown, { id }: { id: string }, context: GraphQLContext): Promise<boolean> => {
       await requirePermissionGuard('users.delete', context);
-      await db.delete(users).where(eq(users.id, id));
+      await db.delete(user).where(eq(user.id, id));
       return true;
     },
 
@@ -179,7 +179,7 @@ export const resolvers = {
   Post: {
     author: async (post: Post, _: unknown, context: GraphQLContext): Promise<User | undefined> => {
       await requirePermissionGuard('users.read', context);
-      const result = await db.select().from(users).where(eq(users.id, post.authorId));
+      const result = await db.select().from(user).where(eq(user.id, post.authorId));
       return result[0];
     }
   }
