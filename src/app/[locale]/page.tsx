@@ -13,7 +13,7 @@ export default async function Home() {
       <div className="mx-auto max-w-4xl">
         <div className="mb-8 text-center">
           <h1 className="mb-4 font-bold text-3xl">{t('hello')}</h1>
-          <p className="text-gray-600">Next.js 15.3.3 + Drizzle + Supabase + GraphQL Yoga Demo</p>
+          <p className="text-gray-600">Next.js 15.4.0-canary.75 + Drizzle + Supabase + GraphQL Yoga Demo</p>
         </div>
 
         {/* Authentication Section */}
